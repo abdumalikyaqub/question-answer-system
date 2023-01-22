@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Test_qasysapp.Models.Question>
+
+@{
+    ViewData["Title"] = "Index";
+    int user_id = Convert.ToInt32(User.Identity.Name);
+}
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="alert" role="alert">
+			@Html.ActionLink("Мои вопросы","MyQuestion", "Question", 
+            new { userid=user_id}, new {@class="btn btn-success"})
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="alert " role="alert">
+			@Html.ActionLink("Мои ответы","Index", "Answer", 
+            new { userid=user_id }, new {@class="btn btn-success"})
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="alert" role="alert">
+			@Html.ActionLink("Мой аккаунт","Account", "Auth", 
+            new { userid=user_id }, new {@class="btn btn-success"})
+        </div>
+    </div>
+</div>
+
+<h2>Все вопросы</h2>
+<hr />
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Новый вопрос</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+           @* <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>*@
+            <th>
+                @*@Html.DisplayNameFor(model => model.Title)*@
+                Заголовок
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorId)
+            </th>*@
+            <th>
+                @*@Html.DisplayNameFor(model => model.CategoryId)*@
+                Категория
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Body)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorId)
+            </td>*@
+            <td>
+                @*@Html.DisplayFor(modelItem => item.CategoryId)*@
+                    @foreach (var cat in ViewBag.Cats)
+                    {
+                        @if (item.CategoryId == cat.Id)
+                        {
+                                <span>@cat.Name</span>
+                        }
+                    }
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |*@
+                @Html.ActionLink("Подробное", "Details", new { id=item.Id}, new{@class="btn btn-primary"}) 
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

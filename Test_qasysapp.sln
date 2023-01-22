@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_qasysapp", "Test_qasysapp\Test_qasysapp.csproj", "{4EF462D0-C516-4B2A-9B80-0E7AA445A24B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4EF462D0-C516-4B2A-9B80-0E7AA445A24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EF462D0-C516-4B2A-9B80-0E7AA445A24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EF462D0-C516-4B2A-9B80-0E7AA445A24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EF462D0-C516-4B2A-9B80-0E7AA445A24B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F76AD82E-5188-4607-BB27-D692ACABBF46}
+	EndGlobalSection
+EndGlobal

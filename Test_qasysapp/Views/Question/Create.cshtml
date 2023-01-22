@@ -1,0 +1,86 @@
+﻿@model Test_qasysapp.Models.Question
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@{
+    int userid = 0;
+    if (User.Identity.Name != null)
+    {
+        userid = Convert.ToInt32(User.Identity.Name);
+    }
+
+}
+
+<h1>Create</h1>
+
+<h4>Question</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           @* <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Body" class="control-label"></label>
+                <input asp-for="Body" class="form-control" />
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+            <div class="form-group ">
+                @Html.Hidden("AuthorId", userid)
+              @*  <label asp-for="AuthorId" class="control-label"></label>*@
+                @*<input asp-for="AuthorId" class="form-control" />*@
+                @*@Html.DropDownListFor(Users => Users.FullName, ViewBag.Users , "Select Gender")*@
+               @* <select id="AuthorId">
+
+                    @foreach (var item in ViewBag.User)
+                    {
+                        <option value="@item.Id">@item.FullName</option>
+                    }
+                </select>*@
+
+
+                @*Работает!*@
+               @* @Html.DropDownListFor(n => n.AuthorId, 
+                    new SelectList(ViewBag.User, "Id", "FullName"), 
+                    new {@class = "form-select form-select-lg mb-3"})
+                *@
+                @*@Html.DropDownListFor(m => m.Author, ViewBag.User as IEnumerable<SelectListItem>)*@
+               @* <select asp-for="AuthorId" asp-items="ViewBag.User"></select>*@
+
+                @*<span asp-validation-for="AuthorId" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                @*<input asp-for="CategoryId" class="form-control" />*@
+
+                @Html.DropDownListFor(n => n.CategoryId, 
+                    new SelectList(ViewBag.Cats, "Id", "Name"), 
+                    new {@class = "form-select form-select-lg mb-3"})
+
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

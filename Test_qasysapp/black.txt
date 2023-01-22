@@ -1,0 +1,131 @@
+﻿<div class="col-md-1">
+			<form  class="upForm">
+			@*<input type="hidden" id="VoterId" value="@Model.Answer.AuthorId" >*@
+			@Html.Hidden("Vote.VoterId", item.AuthorId)
+			@*<input type="hidden" name="Vote.AnswerId" value="@item.Id" >*@
+			@Html.Hidden("Vote.AnswerId", item.Id)
+			@Html.Hidden("Vote.VoteStatus", 10)
+			
+			@*@Html.TextBoxFor(model => model.Vote.VoteStatus, "10", new { @class="btn btn-primary", @onclick = "submitVoteUp()", type = "button" })*@
+
+			@*<input asp-for="Vote.VoteStatus" class="form-control" />*@
+
+			@*@{
+				DateTime date = new DateTime();
+				date = DateTime.Today;
+			}
+			<input type="hidden" id="CretedAt" value="@date" >*@
+
+			<div class="form-group">
+				<button class="btn btn-primary" onclick="submitVoteUp(@item.Id)">Like</button>
+			</div>
+			@*<div class="form-group">
+				<button type="button" class="btn btn-primary" onclick="submitVoteDown()"
+				value="1" id="VoteDown" >Down</button>
+			</div>*@
+			</form>
+
+		</div>
+
+/////////////////////////////////////////
+/////////////
+////////////////////
+
+function submitVoteDown(idForm) 
+		{
+			var form = document.getElementById(idForm).getElementsByClassName('downForm');
+			
+			//var form = document.getElementById(idForm).getElementsByClassName('downForm');
+			//var data = document.querySelectorAll(idForm).forEach((el) => {
+			//	el.mathes('form[name="downForm"]')
+			//}).serialize();
+
+			var data = $(form).serialize();
+
+			console.log(data);
+			$.ajax({
+				type: 'POST',
+				url: '/Question/AddVoteStatus',
+				data: data,
+				success: function (result) {
+					console.log(result);
+				},
+				error: function (result) {
+					console.log(result);
+				}
+
+			})
+		}
+
+
+		/////////////////////////
+////////////////////\
+//////////////
+
+@using Test_qasysapp.Models.Repository;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Question>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p> Web app with ASP.NET Core</p>
+</div>
+
+<div class="alert alert-success" role="alert">
+    @ViewBag.CurUser
+</div>
+
+<h2>Все вопросы</h2>
+<hr />
+
+@foreach (var item in Model)
+{
+                <tr>
+        @* <td>@item.Id</td>*@
+                    <td>@item.Title</td>
+        @*<td>@item.Body</td>*@
+        @* @foreach (var user in authors)
+                {
+                    @if (user.Id == item.AuthorId)
+                    {
+                        <td>@user.FullName</td>
+                    }
+                }*@
+        @*<td>@item.AuthorId</td>*@
+        @foreach (var cat in ViewBag.Cats)
+        {
+            @if (item.CategoryId == cat.Id)
+            {
+                                    <td>@cat.Name</td>
+            }
+        }
+
+                </tr>
+}
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Заголовок</th>
+      <th scope="col">Описание</th>
+      <th scope="col">Автор</th>
+      <th scope="col">Категория</th>
+    </tr>
+  </thead>
+  <tbody>
+        @*@{
+            UserRepos repos = new UserRepos();
+            var authors = repos.GetUsers();
+        }*@
+       
+    </tbody>
+</table>
+
+
+
+

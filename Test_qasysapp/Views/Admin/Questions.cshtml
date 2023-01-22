@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Test_qasysapp.Models.Question>
+
+@{
+    ViewData["Title"] = "Questions";
+}
+
+<h1>Questions</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="Question">Create New</a>
+
+</p>
+
+<div class="row">
+
+    <div class="col-md-3 justify-content-end">
+        <div class="alert" role="alert">
+            @Html.ActionLink("Экспорт","ExpToPdf", new{}, new {@class="btn btn-success"})
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <form asp-action="Search" asp-controller="Admin" method="get">
+        <div class="col-md-5 form-group">
+            <input type="text" name="data" class="form-control" />
+        </div>
+        <div class="col-md-5">
+            <input name="pattern" type="radio" value="title" />
+            <span>Title</span>
+            <input name="pattern" type="radio" value="category" />
+            <span>Category</span>
+
+        </div>
+        <div class="col-md-2">
+            <input type="submit" value="Поиск" class="btn btn-success"/>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Body)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuthorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Question", new {  id=item.Id  }) |
+                @Html.ActionLink("Details", "Details", "Question", new {  id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", "Question", new {  id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

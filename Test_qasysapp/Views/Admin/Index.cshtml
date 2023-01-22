@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="alert" role="alert">
+            @Html.ActionLink("Все вопросы","Questions", new{}, new {@class="btn btn-success"})
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="alert " role="alert">
+            @Html.ActionLink("Все категории","Categories", new{}, new {@class="btn btn-success"})
+        </div>
+    </div>
+</div>

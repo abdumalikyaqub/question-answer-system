@@ -1,0 +1,37 @@
+﻿@using Test_qasysapp.Models.Repository;
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+@model List<Question>
+
+<div class="text-center">
+	<h1 class="display-4">Welcome</h1>
+	<p> Web app with ASP.NET Core</p>
+</div>
+
+<div class="alert alert-success" role="alert">
+	@ViewBag.CurUser
+</div>
+
+<h2>Все вопросы</h2>
+<hr />
+
+@foreach (var item in Model)
+{
+	<div class="row">
+		<div class="col-md-6">
+			@Html.ActionLink(item.Title,"Details", "Question", new {id=item.Id})
+		</div>
+		<div class="col-md-3">
+			@foreach (var cat in ViewBag.Cats)
+			{
+				@if (item.CategoryId == cat.Id)
+				{
+					<span>@cat.Name</span>
+				}
+			}
+		</div>
+	</div>
+
+}

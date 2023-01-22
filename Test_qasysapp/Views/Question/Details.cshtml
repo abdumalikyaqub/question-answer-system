@@ -1,0 +1,242 @@
+﻿@using Test_qasysapp.Models.Repository;
+@model Test_qasysapp.Models.ViewModels.QuestionDetailsViewModel
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+@* ////////////////////////// Question ////////////////////// *@
+
+@{
+	int userid = 0;
+	if (User.Identity.Name !=null)
+	{
+		userid = Convert.ToInt32(User.Identity.Name);
+	}
+	
+}
+
+<div>
+	<h4>Вопрос:</h4>
+	<hr />
+	<dl class="row">
+		@*<dt class = "col-sm-2">
+			@Html.DisplayNameFor(model => model.Question.Id)
+		</dt>*@
+		@*<dd class = "col-sm-10">
+			@Html.DisplayFor(model => model.Question.Id)
+		</dd>*@
+		<dt class = "col-sm-2">
+			Заголовок:
+		</dt>
+		<dd class = "col-sm-10">
+			@Html.DisplayFor(model => model.Question.Title)
+		</dd>
+		<dt class = "col-sm-2">
+			Описание:
+		</dt>
+		<dd class = "col-sm-10">
+			@Html.DisplayFor(model => model.Question.Body)
+		</dd>
+		<dt class = "col-sm-2">
+			Автор:
+		</dt>
+		<dd class = "col-sm-10">
+			@Html.DisplayFor(model => model.Question.AuthorId)
+		</dd>
+		<dt class = "col-sm-2">
+			Категория:
+		</dt>
+		<dd class = "col-sm-10">
+			@Html.DisplayFor(model => model.Question.CategoryId)
+		</dd>
+		<dt class = "col-sm-2">
+			Дата:
+		</dt>
+		<dd class = "col-sm-10">
+			@Html.DisplayFor(model => model.Question.CreatedAt)
+		</dd>
+	</dl>
+
+</div> 
+<br />
+<hr />
+
+@*  ///////////////////////// Answers ///////////////////// *@
+
+@*Answer*@
+<h4>Ответы</h4>
+@foreach (var item in Model.AnswersList)
+{
+	<div class="row mt-3">
+		<div class="col-md-8">
+			@item.Body
+		</div>
+		<div class="col-md-3">
+			@foreach (var user in ViewBag.User)
+			{
+				@if (item.AuthorId == user.Id)
+				{
+					<span>@user.FullName</span>
+				}
+			}
+			
+		</div>
+	
+
+	
+	
+
+
+	@*Like*@
+	@*<div class="row mt-4" >*@
+		<div class="col-md-1">
+				<form  class="like" id="@item.Id">
+				@Html.Hidden("Vote.VoterId", userid)
+				@Html.Hidden("Vote.AnswerId", item.Id)
+				@Html.Hidden("Vote.VoteStatus", 1)
+				<div class="form-group likebtn">
+						<button class="btn btn-success position-relative" onclick="submitVote(@item.Id)">
+								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+								@*Quantity Likes*@
+								@{
+								int summa = 0;
+								//VoteRepos repos = new VoteRepos();
+
+								foreach (var vote in await ViewBag.Votes)
+									{
+										if (vote.AnswerId == item.Id)
+										{
+											summa = summa + vote.VoteStatus;
+										}
+									}
+								}
+								
+									@summa
+								<span class="visually-hidden">unread messages</span>
+								</span>
+								<i class="bi bi-heart-fill"></i>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+}
+
+
+@*////////////////////  Form       /////////// *@
+
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="CreateAnswer">
+
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+			<div class="form-group">
+				<h5>Ответить на вопрос</h5>
+				<textarea asp-for="Answer.Body" class="form-control" rows="5"></textarea>
+				<span asp-validation-for="Answer.Body" class="text-danger"></span>
+			</div>
+
+			@*<div class="form-group ">
+				<label asp-for="Answer.AuthorId" class="control-label"></label>
+				@*Работает!*@
+				@*@Html.DropDownListFor(n => n.Answer.AuthorId, 
+                    new SelectList(ViewBag.User, "Id", "FullName"), 
+                    new {@class = "form-select form-select-lg mb-3"})
+
+				<span asp-validation-for="Answer.AuthorId" class="text-danger"></span>
+			</div>*@
+
+			@Html.Hidden("Answer.AuthorId", userid)
+			@Html.Hidden("Answer.QuestionId", Model.Question.Id)
+          
+			<div class="form-group mt-3">
+				<input type="submit" value="Ответить" class="btn btn-primary" />
+			</div>
+
+		</form>
+
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	function submitVote(idForm) 
+	{
+		//$("#Vote_VoteStatus").val(11);
+		//let $like = document.querySelector(".like");
+		//let $dislike = document.querySelector(".dislike");
+		var form = document.getElementById(idForm);
+		
+		var data = $(form).serialize();
+		//$(form).filter('.like').removeClass("like").addClass("dislike");
+		//$(".likebtn").children().removeClass("btn-primary").addClass("btn-success");
+		$.ajax({
+			type: 'POST',
+			url: '/Question/AddVoteStatus',
+			data: data,
+			success: console.log("success")
+			/*$(document).ajaxStop(function(){
+				window.location.reload();
+			})*/
+			//function (data) {
+			//	if(data.success == true){
+			//		setTimeout(function(){
+			//			location.reload();
+			//		}, 5000)
+			//	}
+			//	console.log("hello");
+			//},
+			//error: function (data) {
+			//	if(data.success == true){
+			//		setTimeout(function(){
+			//			location.reload();
+			//		}, 5000)
+			//	}
+			//}
+		})
+		/*
+		else if($dislike)
+		{
+			$("#Vote_VoteStatus").val(0);
+			var data = $(form).serialize();
+			$(form).removeClass("dislike").addClass("like");
+			$.ajax({
+				type: 'POST',
+				url: '/Question/AddVoteStatus',
+				data: data,
+				success: function (result) {
+					console.log(result);
+				},
+				error: function (result) {
+					console.log(result);
+				}
+
+			})
+		}
+		*/
+		//var data = $(idForm).serialize();
+		//var form = document.getElementById(idForm).getElementsByClassName('likeForm');
+		
+
+		//console.log(data);
+
+		
+	}
+
+</script>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  *@
+
+<div>
+	<a asp-action="Index" class="btn mt-3 btn-primary">Назад</a>
+</div>
